@@ -4,17 +4,13 @@ const difficulty = document.getElementById("difficulty");
 const type = document.getElementById("type");
 const startQuizBtn = document.getElementById("startQuizBtn");
 
-const q = document.getElementById("question");
-const option = document.getElementsByName("option");
-const optionLabel = document.getElementsByName("optionLabel");
-
-const queDiv = document.getElementById("question-div");
-
 const formDiv = document.getElementById("form-div");
 
 let currentQue = 0;
+let questions;
+let correctAns;
 
-function getFormData() {
+document.getElementById("startQuizBtn").addEventListener("click", async () => {
   var Url;
   if (!amount.value) {
     console.log("error hai");
@@ -31,34 +27,57 @@ function getFormData() {
     Url = Url.concat("", `&type=${type.value}`);
   }
 
-  fetchUrl(Url);
-}
+    questions = await fetchUrl(Url);
+    createQue(questions);
+});
 
 async function fetchUrl(url) {
   const response = await fetch(url);
   const data = await response.json();
   // console.log(data);
-  setQue(data.results);
+    return data.results
 }
 
-function setQue(arr) {
-  console.log(arr);
-  var que = arr[currentQue];
-  console.log(que);
-  q.textContent = que.question;
+function createQue(arr) {
+  //   console.log(arr);
+  var queObj = arr[currentQue];
+//   console.log(queObj);
+  //   q.textContent = que.question;
+  let question = queObj.question;
 
-  var options = que.incorrect_answers;
-  options.splice(Math.floor(Math.random() * options.length + 1), 0, que.correct_answer);
-  setOptions(options);
+    var options = queObj.incorrect_answers;
+    correctAns = queObj.correct_answer;
+  options.splice(
+    Math.floor(Math.random() * options.length + 1),
+    0,
+    correctAns
+    );
+    // console.log(options);
+  setQueOps(question, options);
 }
 
-function setOptions(opts) {
-  option.forEach((e, i) => {
-    e.value = opts[i];
-  });
+function setQueOps(q, o) {
+    formDiv.style.display = "none";
+    let queDiv = document.getElementById("question-div");
+    queDiv.style.display = 'flex'
+  let question = `<h4> ${q} </h4>`
+  
+  queDiv.innerHTML = o.map((e) => {
+      return `
+      <div>
+      <input type="radio" id="option" name="option" value="${e}" />  
+      <label for="option" name="optionLabel">${e}</label>
+      </div>`
+  }).join('');
+  
+    queDiv.insertAdjacentHTML("afterbegin", question);
+    let submitBtn = `<button id="ansSubmit"> Submit </button>`
+    queDiv.insertAdjacentHTML("beforeend", submitBtn);
+    document.getElementById("ansSubmit").addEventListener('click', answerSubmit)
+}
 
-  optionLabel.forEach((e, i) => {
-    e.textContent = opts[i];
-  });
-  formDiv.style.display = "none";
+function answerSubmit() {
+    console.log('submitting');
+    let option = document.querySelector('input[name="option"]:checked').value;
+    
 }
