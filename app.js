@@ -48,11 +48,7 @@ function setQue(arr) {
   q.textContent = que.question;
 
   var options = que.incorrect_answers;
-  options.splice(
-    Math.floor(Math.random() * options.length + 1),
-    0,
-    que.correct_answer
-  );
+  options.splice(Math.floor(Math.random() * options.length + 1), 0, que.correct_answer);
   setOptions(options);
 }
 
