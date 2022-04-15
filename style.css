@@ -1,0 +1,53 @@
+#form-div form{
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 16px auto;
+    justify-content: center;
+}
+
+h1{
+    text-align: center;
+}
+
+#form-div label{
+    margin-top: 10px;
+    text-align: center;
+}
+
+#form-div input{
+    margin-bottom: 18px;
+    max-width: 300px;
+    min-width: 300px;
+    text-align: center;
+    margin: 0 auto;
+}
+#form-div select{
+    margin-bottom: 18px;
+    margin: 5px auto;
+    max-width: 300px;
+    min-width: 300px;
+    text-align: center;
+}
+#form-div button{
+    width: 100px;
+    height: 38px;
+    margin: 16px auto;
+    font-size: 18px;
+}
+
+.question-div{
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    background: rgb(175, 173, 173);
+    max-width: 600px;
+    justify-content: center;
+    margin: 15px auto;
+    padding: 20px;
+}
+
+.question-div button{
+    font-size: 18px;
+    margin: 15px auto;
+}
