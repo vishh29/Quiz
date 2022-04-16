@@ -5,12 +5,14 @@ const type = document.getElementById("type");
 const startQuizBtn = document.getElementById("startQuizBtn");
 
 const formDiv = document.getElementById("form-div");
+let queDiv = document.getElementById("question-div");
 
 let currentQue = 0;
 let questions;
 let correctAns;
+let score = 0;
 
-document.getElementById("startQuizBtn").addEventListener("click", async () => {
+startQuizBtn.addEventListener("click", async () => {
   var Url;
   if (!amount.value) {
     console.log("error hai");
@@ -27,8 +29,8 @@ document.getElementById("startQuizBtn").addEventListener("click", async () => {
     Url = Url.concat("", `&type=${type.value}`);
   }
 
-    questions = await fetchUrl(Url);
-    createQue(questions);
+  questions = await fetchUrl(Url);
+  createQue(questions);
 });
 
 async function fetchUrl(url) {
@@ -58,7 +60,7 @@ function createQue(arr) {
 
 function setQueOps(q, o) {
     formDiv.style.display = "none";
-    let queDiv = document.getElementById("question-div");
+    
     queDiv.style.display = 'flex'
   let question = `<h4> ${q} </h4>`
   
@@ -77,7 +79,28 @@ function setQueOps(q, o) {
 }
 
 function answerSubmit() {
-    console.log('submitting');
-    let option = document.querySelector('input[name="option"]:checked').value;
-    
+  let userAns;
+  var options = document.querySelector('input[name = "option"]:checked');
+  if (options != null) {
+    userAns = options.value;
+    if (userAns == correctAns) {
+      score++;
+    }
+    if (currentQue < parseInt(amount.value)-1) {
+      currentQue++;
+      createQue(questions)      
+    } else {
+      queDiv.innerHTML = `<h2>Quiz Finished</h2>
+      <h4>Your score is ${score} out of ${amount.value}.</h4>
+      <button id='resBtn'>Restart</button>
+      `;
+      document.getElementById('resBtn').addEventListener('click', restartQuiz)
+    }
+  } else {
+    alert('select ans')
+  }
+}
+
+function restartQuiz() {
+  return window.location.reload();
 }
